@@ -29,7 +29,8 @@ const app = express();
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
   crossOriginEmbedderPolicy: false,
-  contentSecurityPolicy: false,  // We trust our own content
+  contentSecurityPolicy: false,
+  frameguard: false,  // Allow PDF iframe embedding from Vercel
 }));
 app.use(compression());
 app.use(cors({
@@ -51,6 +52,8 @@ app.use(express.urlencoded({ extended: true }));
 // ── Static Serve (PDFs) ──────────────────────────────────────────
 app.use('/outputs', (req, res, next) => {
   res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('X-Frame-Options', 'ALLOWALL');
   res.setHeader('Content-Type', 'application/pdf');
   next();
 }, express.static(path.join(__dirname, 'outputs')));
