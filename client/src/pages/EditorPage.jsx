@@ -16,6 +16,7 @@ import { skillgapApi } from '../api/skillgapApi';
 import { atsApi } from '../api/atsApi';
 import { chatApi } from '../api/chatApi';
 import { FullPageSpinner } from '../components/ui/Spinner';
+import { API_BASE_URL } from '../config';
 import toast from 'react-hot-toast';
 
 // ── Colors ───────────────────────────────────────────────────────
@@ -118,7 +119,8 @@ export default function EditorPage() {
 
   const handleDownloadPDF = () => {
     if (!resumeData?.pdf_path) return;
-    window.open(resumeData.pdf_path, '_blank');
+    const base = API_BASE_URL.replace('/api', '');
+    window.open(`${base}${resumeData.pdf_path}`, '_blank');
   };
 
   // ── Skill Gap ──────────────────────────────────────────────────
@@ -492,7 +494,7 @@ export default function EditorPage() {
           <div style={{ flex: 1, background: '#1E1E1E', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 3, overflow: 'hidden' }}>
             {resumeData.pdf_path || pendingChange?.pdf_url ? (
               <div style={{ width: '100%', maxWidth: 900, height: '100%', background: '#fff', boxShadow: '0 4px 30px rgba(0,0,0,0.5)', borderRadius: 2, overflow: 'hidden' }}>
-                <iframe key={pendingChange ? pendingChange.pdf_url : pdfKey} src={`${pendingChange ? pendingChange.pdf_url : resumeData.pdf_path}?t=${pendingChange ? Date.now() : pdfKey}#view=FitH&navpanes=0&scrollbar=0`}
+                <iframe key={pendingChange ? pendingChange.pdf_url : pdfKey} src={`${API_BASE_URL.replace('/api', '')}${pendingChange ? pendingChange.pdf_url : resumeData.pdf_path}?t=${pendingChange ? Date.now() : pdfKey}#view=FitH&navpanes=0&scrollbar=0`}
                   style={{ width: '100%', height: '100%', border: 'none' }} title="Resume PDF Preview" />
               </div>
             ) : (
