@@ -1,0 +1,8 @@
+# AlignCV Robots.txt
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /editor
+Disallow: /history
+
+Sitemap: https://align-cv-sable.vercel.app/sitemap.xml
