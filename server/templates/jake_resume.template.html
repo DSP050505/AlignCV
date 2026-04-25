@@ -1,0 +1,157 @@
+<!-- server/templates/jake_resume.template.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://www.resume.lol/fonts/cm/fonts.css');
+
+@page { size: letter; margin: 0.5in; }
+
+body {
+  font-family: "Computer Modern Serif", serif;
+  font-size: 11pt;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+  color: black;
+}
+h1 {
+  color: black;
+  text-align: center;
+  font-size: 26pt;
+  margin: 0 0 4pt 0;
+  padding: 0;
+}
+.headerInfo > ul {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 11pt;
+}
+.headerInfo > ul > li { display: inline; white-space: pre; }
+.headerInfo > ul > li:not(:last-child) { margin-right: 8px; }
+.headerInfo > ul > li:not(:last-child)::after { content: "|"; margin-left: 8px; }
+h2 {
+  border-bottom: 1px solid #000;
+  text-transform: uppercase;
+  font-size: 11pt;
+  font-weight: normal;
+  margin: 5pt 0;
+  padding: 0;
+}
+h2::first-letter { font-size: 14pt; }
+h3 {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11pt;
+  margin: 0 0 0 0.15in;
+  padding: 0;
+}
+h4 {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11pt;
+  font-weight: normal;
+  font-style: italic;
+  margin: 0 0 0 0.15in;
+  padding: 0;
+}
+.spacer { margin: 0 auto; }
+.normal { font-weight: normal; }
+.tech-stack { font-style: normal; font-weight: normal; }
+ul {
+  margin: 1pt 0;
+  margin-left: 0.3in;
+  padding-left: 24px;
+  padding-right: 24px;
+  font-size: 11pt;
+}
+ul > li { margin-bottom: 1pt; }
+ul > li:last-child { margin-bottom: 5pt; }
+.indent { margin-left: 0.15in; }
+a { color: black; text-underline-offset: 4px; }
+p { margin: 0; padding: 0; }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ─────────────────────────────── -->
+<h1>{{NAME}}</h1>
+<div class="section headerInfo">
+  <ul>
+    {{#if PHONE}}<li>{{PHONE}}</li>{{/if}}
+    {{#if EMAIL}}<li><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></li>{{/if}}
+    {{#if LINKEDIN}}<li><a href="{{LINKEDIN}}">LinkedIn</a></li>{{/if}}
+    {{#if GITHUB}}<li><a href="{{GITHUB}}">GitHub</a></li>{{/if}}
+    {{#if LEETCODE}}<li><a href="{{LEETCODE}}">LeetCode</a></li>{{/if}}
+    {{#if PORTFOLIO}}<li><a href="{{PORTFOLIO}}">Portfolio</a></li>{{/if}}
+  </ul>
+</div>
+<div style="margin-top: 5pt; margin-left: 0.1in; margin-right: 0.1in; text-align: justify; line-height: 1.2;">
+  {{#if SUMMARY}}{{SUMMARY}}{{/if}}
+</div>
+
+<!-- ── EDUCATION ─────────────────────────── -->
+<h2>Education</h2>
+{{#each EDUCATION}}
+<h3>{{institution}} <span class="spacer"></span><span class="normal">{{start_date}} &ndash; {{end_date}}</span></h3>
+<h4>{{degree}}{{#if field}}, {{field}}{{/if}}<span class="spacer"></span>{{#if cgpa}}GPA: {{cgpa}}{{#if location}} | {{/if}}{{/if}}{{location}}</h4>
+{{/each}}
+
+<!-- ── EXPERIENCE ─────────────────────────── -->
+{{#if EXPERIENCES}}
+<h2>Experience</h2>
+{{#each EXPERIENCES}}
+<h3>{{role}} <span class="spacer"></span><span class="normal">{{start_date}} &ndash; {{#if is_current}}Present{{else}}{{end_date}}{{/if}}</span></h3>
+<h4>{{company}} <span class="spacer"></span>{{location}}</h4>
+<ul>
+  {{#each bullets}}<li>{{{this}}}</li>{{/each}}
+</ul>
+{{/each}}
+{{/if}}
+
+<!-- ── PROJECTS ─────────────────────────── -->
+{{#if PROJECTS}}
+<h2>Projects</h2>
+{{#each PROJECTS}}
+<h3>
+  {{#if live_url}}<a href="{{live_url}}">{{title}}</a>{{else}}{{title}}{{/if}}
+  {{#if tech_stack_str}}<span class="tech-stack">&nbsp;| <em>{{tech_stack_str}}</em></span>{{/if}}
+  <span class="spacer"></span>
+  <span class="normal">{{start_date}}{{#if end_date}} &ndash; {{end_date}}{{/if}}</span>
+</h3>
+<ul>
+  {{#each bullets}}<li>{{{this}}}</li>{{/each}}
+</ul>
+{{/each}}
+{{/if}}
+
+<!-- ── TECHNICAL SKILLS ─────────────────── -->
+{{#if SKILLS}}
+<h2>Technical Skills</h2>
+{{#each SKILL_GROUPS}}
+<p><span class="indent"></span><strong>{{category}}</strong>: {{{skills_str}}}</p>
+{{/each}}
+{{/if}}
+
+<!-- ── ACHIEVEMENTS ────────────────────── -->
+{{#if ACHIEVEMENTS}}
+<h2>Achievements</h2>
+<ul>
+  {{#each ACHIEVEMENTS}}<li>{{title}}{{#if description}} — {{description}}{{/if}}{{#if date}} ({{date}}){{/if}}</li>{{/each}}
+</ul>
+{{/if}}
+
+<!-- ── CERTIFICATIONS ─────────────────── -->
+{{#if CERTIFICATIONS}}
+<h2>Certifications</h2>
+<ul>
+  {{#each CERTIFICATIONS}}<li>{{name}}{{#if issuer}}, {{issuer}}{{/if}}{{#if issued_at}} ({{issued_at}}){{/if}}</li>{{/each}}
+</ul>
+{{/if}}
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+# Environment
+.env
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Server runtime
+server/uploads/
+server/outputs/
+server/logs/
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Temp
+*.tmp
+*.swp

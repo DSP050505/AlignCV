@@ -1,0 +1,17 @@
+{
+  "name": "aligncv",
+  "version": "1.0.0",
+  "description": "AlignCV — AI-powered resume tailoring platform",
+  "private": true,
+  "scripts": {
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "migrate": "cd server && npx knex migrate:latest --knexfile knexfile.js",
+    "migrate:rollback": "cd server && npx knex migrate:rollback --knexfile knexfile.js",
+    "build": "cd client && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
