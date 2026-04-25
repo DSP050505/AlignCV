@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "start:prod": "knex migrate:latest --knexfile knexfile.js --env production && node index.js",
+    "build": "echo 'No build needed for server'",
     "dev": "nodemon index.js",
     "migrate": "knex migrate:latest --knexfile knexfile.js",
     "migrate:rollback": "knex migrate:rollback --knexfile knexfile.js",
