@@ -23,6 +23,7 @@ import { useEffect, useState, useRef } from 'react';
 import { resumeApi } from '../api/resumeApi';
 import { trackerApi } from '../api/trackerApi';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 export default function DashboardPage() {
   const user = useAuthStore((s) => s.user);
@@ -81,7 +82,7 @@ export default function DashboardPage() {
     try {
       const formData = new FormData();
       formData.append('resume', atsFile); formData.append('jd', atsJd);
-      const res = await axios.post('http://localhost:5000/api/ats/quick-check', formData, {
+      const res = await axios.post(`${API_BASE_URL}/ats/quick-check`, formData, {
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }
       });
       setAtsResult(res.data.data); toast.success('ATS Analysis Complete');

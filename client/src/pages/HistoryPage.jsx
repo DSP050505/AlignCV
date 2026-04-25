@@ -5,6 +5,7 @@ import {
   FileText, Clock, Loader2, Plus
 } from 'lucide-react';
 import { resumeApi } from '../api/resumeApi';
+import { API_BASE_URL } from '../config';
 import { FullPageSpinner } from '../components/ui/Spinner';
 import toast from 'react-hot-toast';
 
@@ -71,7 +72,7 @@ export default function HistoryPage() {
 
   const handleDownload = (resume) => {
     if (!resume.pdf_path) return toast.error('No PDF available');
-    window.open(`http://localhost:5000${resume.pdf_path}`, '_blank');
+    window.open(`${API_BASE_URL.replace('/api', '')}${resume.pdf_path}`, '_blank');
   };
 
   const formatDate = (dateStr) => {

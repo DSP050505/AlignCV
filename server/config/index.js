@@ -14,13 +14,18 @@ module.exports = {
   // ── Database ───────────────────────────────────────────────────
   DB: {
     client: 'postgresql',
-    connection: {
-      host: process.env.DB_HOST || '127.0.0.1',
-      port: parseInt(process.env.DB_PORT, 10) || 5432,
-      database: process.env.DB_NAME || 'aligncv',
-      user: process.env.DB_USER || 'postgres',
-      password: process.env.DB_PASSWORD || 'postgres',
-    },
+    connection: process.env.DATABASE_URL
+      ? {
+          connectionString: process.env.DATABASE_URL,
+          ssl: { rejectUnauthorized: false },
+        }
+      : {
+          host: process.env.DB_HOST || '127.0.0.1',
+          port: parseInt(process.env.DB_PORT, 10) || 5432,
+          database: process.env.DB_NAME || 'aligncv',
+          user: process.env.DB_USER || 'postgres',
+          password: process.env.DB_PASSWORD || 'postgres',
+        },
     pool: { min: 2, max: 10 },
   },
 

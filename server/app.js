@@ -33,7 +33,15 @@ app.use(helmet({
 }));
 app.use(compression());
 app.use(cors({
-  origin: config.CLIENT_URL,
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, server-to-server)
+    if (!origin) return callback(null, true);
+    const allowed = (config.CLIENT_URL || '').split(',').map(u => u.trim());
+    if (allowed.includes(origin) || config.NODE_ENV === 'development') {
+      return callback(null, true);
+    }
+    callback(new Error('Not allowed by CORS'));
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));

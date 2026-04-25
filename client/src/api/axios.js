@@ -5,9 +5,10 @@
 
 import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
+import { API_BASE_URL } from '../config';
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: API_BASE_URL,
   timeout: 60000, // 60s — Groq is ultra-fast, no need for long timeouts
   headers: { 'Content-Type': 'application/json' },
 });
