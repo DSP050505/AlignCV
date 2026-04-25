@@ -25,3 +25,7 @@ Thumbs.db
 # Temp
 *.tmp
 *.swp
+
+# Puppeteer cache
+.cache/
+server/.cache/
