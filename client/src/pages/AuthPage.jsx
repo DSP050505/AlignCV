@@ -134,14 +134,20 @@ export default function AuthPage() {
       aiMessageRef.current.style.visibility = 'hidden';
       aiMessageRef.current.textContent = '';
     }
-    /* 5. Clear fake-typed input values */
+    /* 5. Clear fake-typed input values — ONLY if AI fill was active */
+    if (effect2Active.current) {
+      if (nameInputRef.current) {
+        nameInputRef.current.value = '';
+      }
+      if (passcodeInputRef.current) {
+        passcodeInputRef.current.value = '';
+      }
+    }
     if (nameInputRef.current) {
-      nameInputRef.current.value = '';
       nameInputRef.current.style.borderColor = '';
       nameInputRef.current.style.boxShadow = '';
     }
     if (passcodeInputRef.current) {
-      passcodeInputRef.current.value = '';
       passcodeInputRef.current.style.borderColor = '';
       passcodeInputRef.current.style.boxShadow = '';
     }
@@ -160,6 +166,11 @@ export default function AuthPage() {
 
   const handleUserInteraction = useCallback(() => {
     if (!idleActiveRef.current) return;
+    /* If no effects are running, just reset the idle counter */
+    if (!effect1Active.current && !effect2Active.current) {
+      idleSeconds.current = 0;
+      return;
+    }
     resetAllEffects();
   }, [resetAllEffects]);
 
