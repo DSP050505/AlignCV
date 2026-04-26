@@ -62,10 +62,11 @@ export default function NewResumePage() {
       {/* Background Ambience */}
       <div style={{ position: 'absolute', top: 0, right: 0, width: '100%', height: '500px', backgroundColor: 'rgba(99,102,241,0.05)', filter: 'blur(120px)', borderRadius: '50%', pointerEvents: 'none' }} />
 
-      <main style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '800px' }}>
+      <main className="newresume-main" style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '800px' }}>
         
         {stage === STAGE_JD && (
           <div
+            className="newresume-card"
             style={{
               backgroundColor: colors.card,
               border: `1px solid ${colors.border}`,
@@ -78,8 +79,9 @@ export default function NewResumePage() {
             }}
           >
             {/* Top Header */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '32px' }}>
+            <div className="newresume-header" style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '32px' }}>
               <div
+                className="newresume-header-icon"
                 style={{
                   width: '64px',
                   height: '64px',
@@ -110,6 +112,7 @@ export default function NewResumePage() {
 
             {/* Textarea */}
             <textarea
+              className="newresume-textarea"
               value={rawJd}
               onChange={(e) => setRawJd(e.target.value)}
               placeholder="Paste job description here...&#10;• Responsibilities&#10;• Requirements&#10;• Skills"
@@ -135,7 +138,7 @@ export default function NewResumePage() {
             />
 
             {/* Footer Row */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '24px' }}>
+            <div className="newresume-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '24px' }}>
               <p style={{ fontSize: '13px', color: colors.textMuted, margin: 0 }}>We'll analyze this and tailor your resume accordingly.</p>
               <button
                 onClick={handleAnalyseJD}
@@ -174,7 +177,7 @@ export default function NewResumePage() {
 
         {stage === STAGE_REVIEW && generatedResume && (
           <div>
-            <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+            <div className="newresume-review-heading" style={{ textAlign: 'center', marginBottom: '32px' }}>
               <h1 style={{ fontSize: '30px', fontWeight: 700, color: colors.text, margin: '0 0 8px 0' }}>Your Tailored Resume is Ready</h1>
               <p style={{ color: colors.textSecondary, fontSize: '16px', margin: 0 }}>We curated your top experiences and rewrote the bullets to match the JD.</p>
             </div>
@@ -216,6 +219,7 @@ export default function NewResumePage() {
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
                 <button
+                  className="newresume-finish-btn"
                   onClick={handleFinishSprint4}
                   onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#4f46e5'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = colors.primary; e.currentTarget.style.transform = 'none'; }}

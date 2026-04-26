@@ -266,7 +266,7 @@ export default function ProfileWizardPage() {
 
       <main className="relative z-10 max-w-2xl mx-auto px-6 py-8">
         {/* Step Indicator */}
-        <div className="flex items-center justify-center gap-1 mb-8">
+        <div className="wizard-steps" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', marginBottom: '32px' }}>
           {STEPS.map((s, i) => (
             <button
               key={s.key}

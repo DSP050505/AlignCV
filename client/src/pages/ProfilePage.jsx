@@ -128,6 +128,7 @@ export default function ProfilePage() {
             gap: '16px',
             marginTop: '24px',
           }}
+          className="profile-personal-grid"
         >
           <div>
             <p style={{ fontSize: '11px', color: colors.textMuted, textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 4px 0' }}>Phone</p>
@@ -159,6 +160,7 @@ export default function ProfilePage() {
     >
       {/* Navbar */}
       <nav
+        className="profile-nav"
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -194,7 +196,7 @@ export default function ProfilePage() {
             Career Profile
           </span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div className="profile-nav-actions" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <button
             onClick={() => navigate('/profile/preview')}
             style={{
@@ -242,6 +244,7 @@ export default function ProfilePage() {
 
       {/* Main Grid Layout */}
       <main
+        className="profile-main-grid"
         style={{
           maxWidth: '1280px',
           margin: '0 auto',

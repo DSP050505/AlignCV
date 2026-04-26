@@ -90,7 +90,7 @@ export default function HistoryPage() {
       <div style={{ position: 'fixed', top: '-10%', left: '-5%', width: '500px', height: '500px', backgroundColor: 'rgba(99,102,241,0.05)', filter: 'blur(100px)', borderRadius: '50%', pointerEvents: 'none' }} />
 
       {/* Navbar */}
-      <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', borderBottom: `1px solid ${colors.border}`, backgroundColor: 'rgba(11, 15, 25, 0.8)', backdropFilter: 'blur(12px)', position: 'sticky', top: 0, zIndex: 50 }}>
+      <nav className="history-nav" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', borderBottom: `1px solid ${colors.border}`, backgroundColor: 'rgba(11, 15, 25, 0.8)', backdropFilter: 'blur(12px)', position: 'sticky', top: 0, zIndex: 50 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <button onClick={() => navigate('/dashboard')} style={{ padding: '6px', borderRadius: '8px', backgroundColor: 'rgba(255,255,255,0.05)', border: 'none', color: colors.textSecondary, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <ChevronLeft size={18} />
@@ -109,9 +109,9 @@ export default function HistoryPage() {
         </button>
       </nav>
 
-      <main style={{ position: 'relative', zIndex: 10, maxWidth: '1000px', margin: '32px auto', padding: '0 24px' }}>
+      <main className="history-main" style={{ position: 'relative', zIndex: 10, maxWidth: '1000px', margin: '32px auto', padding: '0 24px' }}>
         {resumes.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '96px 0' }}>
+          <div className="history-empty" style={{ textAlign: 'center', padding: '96px 0' }}>
             <FileText size={64} color={colors.textMuted} style={{ margin: '0 auto 24px auto', opacity: 0.3 }} />
             <h2 style={{ fontSize: '24px', fontWeight: 700, color: colors.text, marginBottom: '8px' }}>No resumes yet</h2>
             <p style={{ color: colors.textMuted, marginBottom: '32px' }}>Create your first tailored resume by pasting a job description.</p>
@@ -125,7 +125,7 @@ export default function HistoryPage() {
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {/* Header */}
-            <div style={{ display: 'grid', gridTemplateColumns: '5fr 2fr 2fr 3fr', gap: '16px', padding: '12px 24px', fontSize: '12px', fontWeight: 700, color: colors.textMuted, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <div className="history-header" style={{ display: 'grid', gridTemplateColumns: '5fr 2fr 2fr 3fr', gap: '16px', padding: '12px 24px', fontSize: '12px', fontWeight: 700, color: colors.textMuted, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               <div>Resume</div>
               <div style={{ textAlign: 'center' }}>ATS Score</div>
               <div style={{ textAlign: 'center' }}>Created</div>
@@ -147,11 +147,12 @@ export default function HistoryPage() {
                   alignItems: 'center',
                   transition: 'all 0.2s',
                 }}
+                className="history-row"
                 onMouseEnter={(e) => e.currentTarget.style.borderColor = colors.borderHover}
                 onMouseLeave={(e) => e.currentTarget.style.borderColor = colors.border}
               >
                 {/* Title */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div className="history-row-title" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'linear-gradient(135deg, rgba(99,102,241,0.2), rgba(99,102,241,0.4))', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <FileText size={20} color={colors.primaryLight} />
                   </div>
@@ -162,17 +163,17 @@ export default function HistoryPage() {
                 </div>
 
                 {/* ATS Score */}
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div className="history-col-ats" style={{ display: 'flex', justifyContent: 'center' }}>
                   <ATSBadge score={resume.ats_score} />
                 </div>
 
                 {/* Date */}
-                <div style={{ textAlign: 'center' }}>
+                <div className="history-col-date" style={{ textAlign: 'center' }}>
                   <span style={{ fontSize: '12px', color: colors.textMuted }}>{formatDate(resume.created_at)}</span>
                 </div>
 
                 {/* Actions */}
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+                <div className="history-col-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
                   <button
                     onClick={() => handleDownload(resume)}
                     style={{ padding: '10px', borderRadius: '10px', backgroundColor: 'rgba(255,255,255,0.05)', border: `1px solid ${colors.border}`, color: colors.textMuted, cursor: 'pointer', transition: 'all 0.2s' }}

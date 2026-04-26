@@ -235,7 +235,7 @@ export default function EditorPage() {
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: C.bg, fontFamily: "'Inter', system-ui, sans-serif", overflow: 'hidden' }}>
 
       {/* ── TOP NAV ── */}
-      <nav style={{ height: 56, background: C.panel, borderBottom: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 20px', flexShrink: 0 }}>
+      <nav className="editor-nav" style={{ height: 56, background: C.panel, borderBottom: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 20px', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <button onClick={() => navigate('/dashboard')} style={{ padding: 8, background: 'none', border: 'none', color: C.textMuted, cursor: 'pointer', borderRadius: 6, display: 'flex' }}>
             <ChevronLeft size={20} />
@@ -243,7 +243,7 @@ export default function EditorPage() {
           <div style={{ width: 32, height: 32, borderRadius: 6, background: 'rgba(99,102,241,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <FileText size={16} color={C.primaryLight} />
           </div>
-          <span style={{ fontWeight: 600, fontSize: 15, color: C.white, maxWidth: 350, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          <span className="editor-title" style={{ fontWeight: 600, fontSize: 15, color: C.white, maxWidth: 350, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {resumeData.title || 'Tailored Resume'}
           </span>
         </div>
@@ -266,13 +266,13 @@ export default function EditorPage() {
       </nav>
 
       {/* ── SPLIT VIEW ── */}
-      <main style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
+      <main className="editor-split" style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
 
         {/* ─── LEFT PANEL ─── */}
-        <div style={{ width: 520, background: C.panel, borderRight: `1px solid ${C.border}`, display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
+        <div className="editor-left-panel" style={{ width: 520, background: C.panel, borderRight: `1px solid ${C.border}`, display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
 
           {/* Tabs */}
-          <div style={{ display: 'flex', gap: 6, padding: '12px 12px', borderBottom: `1px solid ${C.border}` }}>
+          <div className="editor-tab-bar" style={{ display: 'flex', gap: 6, padding: '12px 12px', borderBottom: `1px solid ${C.border}` }}>
             {[
               { key: 'skillgap', icon: ShieldAlert, label: 'Gaps' },
               { key: 'ats', icon: Target, label: 'ATS' },
@@ -490,7 +490,7 @@ export default function EditorPage() {
         </div>
 
         {/* ─── RIGHT PANEL — PDF ─── */}
-        <div style={{ flex: 1, display: 'flex', overflow: 'hidden', position: 'relative' }}>
+        <div className="editor-right-panel" style={{ flex: 1, display: 'flex', overflow: 'hidden', position: 'relative' }}>
           <div style={{ flex: 1, background: '#1E1E1E', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 3, overflow: 'hidden' }}>
             {resumeData.pdf_path || pendingChange?.pdf_url ? (
               <div style={{ width: '100%', maxWidth: 900, height: '100%', background: '#fff', boxShadow: '0 4px 30px rgba(0,0,0,0.5)', borderRadius: 2, overflow: 'hidden' }}>
@@ -507,7 +507,7 @@ export default function EditorPage() {
 
           {/* FLOATING ACTION BAR FOR DIFF REVIEW */}
           {pendingChange && (
-            <div style={{
+            <div className="editor-floating-bar" style={{
               position: 'absolute', bottom: 30, left: '50%', transform: 'translateX(-50%)',
               background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(10px)',
               padding: '12px 16px', borderRadius: 16, border: `1px solid ${C.borderLight}`,
@@ -517,8 +517,8 @@ export default function EditorPage() {
                 <div style={{ width: 8, height: 8, borderRadius: '4px', background: C.success, animation: 'pulse 2s infinite' }} />
                 Review changes in the document
               </div>
-              <div style={{ width: 1, height: 24, background: C.borderLight }} />
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div className="bar-divider" style={{ width: 1, height: 24, background: C.borderLight }} />
+              <div className="bar-actions" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <button onClick={handleRejectChange} disabled={applyingChange}
                   style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', background: 'transparent', border: `1px solid ${C.borderLight}`, borderRadius: 8, color: C.white, fontSize: 13, fontWeight: 600, cursor: 'pointer', opacity: applyingChange ? 0.5 : 1 }}>
                   <X size={16} /> Discard changes

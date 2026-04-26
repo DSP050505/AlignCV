@@ -47,15 +47,15 @@ export default function PreviewProfilePage() {
         <span style={{ fontSize: '16px', fontWeight: 700, color: colors.text }}>Preview Profile</span>
       </nav>
 
-      <main style={{ maxWidth: '800px', margin: '40px auto', padding: '0 24px' }}>
+      <main className="preview-main" style={{ maxWidth: '800px', margin: '40px auto', padding: '0 24px' }}>
         
         {/* Header (Personal Info) */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '24px', marginBottom: '40px' }}>
-          <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg, rgba(99,102,241,0.2), rgba(99,102,241,0.6))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '32px', fontWeight: 700, color: '#fff' }}>
+        <div className="preview-header" style={{ display: 'flex', alignItems: 'center', gap: '24px', marginBottom: '40px' }}>
+          <div className="preview-avatar" style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg, rgba(99,102,241,0.2), rgba(99,102,241,0.6))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '32px', fontWeight: 700, color: '#fff', flexShrink: 0 }}>
             {personal?.full_name ? personal.full_name[0].toUpperCase() : personal?.email?.[0]?.toUpperCase() || 'U'}
           </div>
           <div style={{ flex: 1 }}>
-            <h1 style={{ fontSize: '28px', fontWeight: 700, margin: '0 0 8px 0', color: colors.text }}>
+            <h1 className="preview-name" style={{ fontSize: '28px', fontWeight: 700, margin: '0 0 8px 0', color: colors.text }}>
               {personal?.full_name || personal?.email || 'Your Profile'}
             </h1>
             <p style={{ fontSize: '16px', color: colors.textSecondary, margin: '0 0 12px 0' }}>{personal?.headline || 'Headline not updated'}</p>

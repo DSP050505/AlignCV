@@ -131,7 +131,7 @@ export default function DashboardPage() {
       </div>
 
       {/* ── LEFT DRAWER CONTENT ── */}
-      <div style={{ position: 'fixed', left: leftOpen ? '0' : '-60%', top: 0, bottom: 0, width: '50%', maxWidth: '600px', backgroundColor: colors.bg, borderRight: `1px solid ${colors.border}`, zIndex: 110, transition: '0.4s', padding: '60px 40px', overflowY: 'auto' }}>
+      <div className="drawer-left" style={{ position: 'fixed', left: leftOpen ? '0' : '-60%', top: 0, bottom: 0, width: '50%', maxWidth: '600px', backgroundColor: colors.bg, borderRight: `1px solid ${colors.border}`, zIndex: 110, transition: '0.4s', padding: '60px 40px', overflowY: 'auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '32px' }}><h2 style={{ fontSize: '22px', fontWeight: 700, display: 'flex', gap: '12px' }}><BriefcaseBusiness color="#60A5FA" /> Application Tracker</h2><button onClick={() => setLeftOpen(false)} style={{ background: 'none', border: 'none', color: colors.textMuted }}><X /></button></div>
         <form onSubmit={handleCreateTracker} style={{ background: colors.card, border: `1px solid ${colors.border}`, borderRadius: '16px', padding: '20px', marginBottom: '32px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
@@ -153,7 +153,7 @@ export default function DashboardPage() {
       </div>
 
       {/* ── RIGHT DRAWER CONTENT ── */}
-      <div style={{ position: 'fixed', right: rightOpen ? '0' : '-60%', top: 0, bottom: 0, width: '50%', maxWidth: '600px', backgroundColor: colors.bg, borderLeft: `1px solid ${colors.border}`, zIndex: 110, transition: '0.4s', padding: '60px 40px', overflowY: 'auto' }}>
+      <div className="drawer-right" style={{ position: 'fixed', right: rightOpen ? '0' : '-60%', top: 0, bottom: 0, width: '50%', maxWidth: '600px', backgroundColor: colors.bg, borderLeft: `1px solid ${colors.border}`, zIndex: 110, transition: '0.4s', padding: '60px 40px', overflowY: 'auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '32px' }}><h2 style={{ fontSize: '22px', fontWeight: 700, gap: '12px', display: 'flex' }}><Target color="#10B981" /> ATS Validator</h2><button onClick={closeRight} style={{ background: 'none', border: 'none', color: colors.textMuted }}><X /></button></div>
         {!atsResult ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -174,17 +174,17 @@ export default function DashboardPage() {
       </div>
 
       {/* ── NAVBAR ── */}
-      <nav style={{ 
+      <nav className="dashboard-nav" style={{ 
         display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 40px', 
         background: 'rgba(11,15,25,0.95)', borderBottom: `1px solid ${colors.border}`, 
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 600 
       }}>
-        <div style={{ fontSize: '19px', fontWeight: 800, marginRight: '40px' }}>Align<span style={{ color: colors.primaryLight }}>CV</span></div>
+        <div className="dashboard-brand" style={{ fontSize: '19px', fontWeight: 800, marginRight: '40px' }}>Align<span style={{ color: colors.primaryLight }}>CV</span></div>
         
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flex: 1 }}>
            {/* TOUR BOX IN HEADER - FULL SPREAD */}
            {showTour && (
-             <div style={{ 
+             <div className="dashboard-tour-box" style={{ 
                animation: 'fadeInDown 0.4s ease', 
                flex: 1, 
                padding: '10px 24px', 
@@ -201,7 +201,7 @@ export default function DashboardPage() {
                   <p style={{ margin: '0 0 2px 0', fontSize: '14px', fontWeight: 800, color: colors.primaryLight, textTransform: 'uppercase', letterSpacing: '1px' }}>{tourSteps[tourStep].title}</p>
                   <p style={{ margin: 0, fontSize: '12px', color: 'rgba(255,255,255,0.8)', lineHeight: 1.4 }}>{tourSteps[tourStep].desc}</p>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '24px' }}>
+                <div className="dashboard-tour-actions" style={{ display: 'flex', alignItems: 'center', gap: '16px', borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '24px' }}>
                   <button onClick={skipTour} style={{ background: 'none', border: 'none', color: colors.textMuted, fontSize: '11px', fontWeight: 700, cursor: 'pointer', padding: '8px' }}>SKIP TOUR</button>
                   <button 
                     onClick={() => tourStep === tourSteps.length - 1 ? finishTour() : setTourStep(s => s + 1)} 
@@ -215,22 +215,22 @@ export default function DashboardPage() {
            
            {!showTour && <div style={{ flex: 1 }} />}
 
-           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginLeft: '20px' }}>
-             <button onClick={() => setTourStep(0)} style={{ background: 'rgba(99,102,241,0.1)', border: `1px solid ${colors.primary}30`, padding: '8px 16px', borderRadius: '10px', color: colors.primaryLight, fontSize: '12px', fontWeight: 700, cursor: 'pointer' }}>
+           <div className="dashboard-nav-right" style={{ display: 'flex', alignItems: 'center', gap: '16px', marginLeft: '20px' }}>
+             <button className="dashboard-guide-btn" onClick={() => setTourStep(0)} style={{ background: 'rgba(99,102,241,0.1)', border: `1px solid ${colors.primary}30`, padding: '8px 16px', borderRadius: '10px', color: colors.primaryLight, fontSize: '12px', fontWeight: 700, cursor: 'pointer' }}>
                Guide Me
              </button>
-             <button onClick={handleLogout} style={{ fontSize: '12px', fontWeight: 700, color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer' }}>Logout</button>
+             <button className="logout-btn" onClick={handleLogout} style={{ fontSize: '12px', fontWeight: 700, color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer' }}>Logout</button>
            </div>
         </div>
       </nav>
 
       {/* ── MAIN ── */}
-      <main style={{ maxWidth: '1200px', margin: '80px auto 0', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 'calc(100vh - 100px)', padding: '0 24px' }}>
-        <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+      <main className="dashboard-main" style={{ maxWidth: '1200px', margin: '80px auto 0', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 'calc(100vh - 100px)', padding: '0 24px' }}>
+        <div className="dashboard-greeting" style={{ textAlign: 'center', marginBottom: '60px' }}>
           <h1 style={{ fontSize: '42px', fontWeight: 900, margin: '0 0 12px 0' }}>Hello, <span style={{ background: `linear-gradient(to right, ${colors.primaryLight}, #c084fc)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{user?.name}</span></h1>
           <p style={{ fontSize: '17px', color: colors.textSecondary, margin: 0 }}>What would you like to achieve today?</p>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 360px)', gap: '24px' }}>
+        <div className="dashboard-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 360px)', gap: '24px' }}>
           <div id="tour-card-1" onClick={() => navigate('/profile')} className={`center-card ${tourSteps[tourStep]?.target === 'card-1' ? 'tour-highlight' : ''}`} style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${colors.border}`, borderRadius: '24px', padding: '32px', cursor: 'pointer' }}>
              <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(59,130,246,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}><UserCircle color="#60A5FA" size={28} /></div>
              <h3 style={{ fontSize: '20px', fontWeight: 800 }}>Professional Bio</h3>

@@ -133,6 +133,7 @@ export default function AuthPage() {
 
   return (
     <div
+      className="auth-container"
       style={{
         minHeight: '100vh',
         width: '100%',
@@ -151,6 +152,7 @@ export default function AuthPage() {
     >
       {/* Invisible Card Wrapper */}
       <div
+        className="auth-card"
         style={{
           width: '100%',
           maxWidth: '400px',
@@ -160,7 +162,7 @@ export default function AuthPage() {
         }}
       >
         {/* Logo — mb 12px to tabs */}
-        <div style={{ textAlign: 'center', marginBottom: '12px' }}>
+        <div className="auth-logo" style={{ textAlign: 'center', marginBottom: '12px' }}>
           <h1
             style={{
               fontSize: '32px',
