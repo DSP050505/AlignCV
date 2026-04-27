@@ -29,3 +29,5 @@ Thumbs.db
 # Puppeteer cache
 .cache/
 server/.cache/
+server/.wwebjs_auth/
+server/.wwebjs_cache/

@@ -22,6 +22,7 @@ import toast from 'react-hot-toast';
 import { useEffect, useState, useRef } from 'react';
 import { resumeApi } from '../api/resumeApi';
 import { trackerApi } from '../api/trackerApi';
+import { authApi } from '../api/authApi';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
 
@@ -29,6 +30,7 @@ export default function DashboardPage() {
   const user = useAuthStore((s) => s.user);
   const token = useAuthStore((s) => s.token);
   const logout = useAuthStore((s) => s.logout);
+  const setAuth = useAuthStore((s) => s.setAuth);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -57,10 +59,15 @@ export default function DashboardPage() {
     if (user) {
       resumeApi.getAll().then(res => setResumes(res.data.data)).catch(() => {});
       trackerApi.getAll().then(res => setTrackedApps(res.data.data)).catch(() => {});
+      authApi.getMe().then(res => {
+        if (res.data.data.whatsapp_code && res.data.data.whatsapp_code !== user.whatsapp_code) {
+           setAuth({ ...user, whatsapp_code: res.data.data.whatsapp_code }, token);
+        }
+      }).catch(() => {});
       const hasSeenTour = localStorage.getItem(`tour_seen_${user.id}`);
       if (!hasSeenTour) setTimeout(() => setTourStep(0), 1000);
     }
-  }, [user]);
+  }, [user?.id]);
 
   const handleCreateTracker = async (e) => {
     e.preventDefault(); setTrackerLoading(true);
@@ -216,6 +223,11 @@ export default function DashboardPage() {
            {!showTour && <div style={{ flex: 1 }} />}
 
            <div className="dashboard-nav-right" style={{ display: 'flex', alignItems: 'center', gap: '16px', marginLeft: '20px' }}>
+             {user?.whatsapp_code && (
+               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(34, 197, 94, 0.15)', border: '1px solid rgba(34, 197, 94, 0.3)', padding: '6px 12px', borderRadius: '8px', color: '#4ade80', fontSize: '12px', fontWeight: 700 }}>
+                 📱 {user.whatsapp_code}
+               </div>
+             )}
              <button className="dashboard-guide-btn" onClick={() => setTourStep(0)} style={{ background: 'rgba(99,102,241,0.1)', border: `1px solid ${colors.primary}30`, padding: '8px 16px', borderRadius: '10px', color: colors.primaryLight, fontSize: '12px', fontWeight: 700, cursor: 'pointer' }}>
                Guide Me
              </button>

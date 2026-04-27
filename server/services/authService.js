@@ -42,11 +42,16 @@ async function signup(name, passcode) {
   // Create blank profile for the user
   await profileQueries.create(user.id);
 
+  // Generate WhatsApp code
+  const wcode = 'ALIGNCV-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+  const db = require('../db/knex');
+  await db('users').where({ id: user.id }).update({ whatsapp_code: wcode });
+
   // Generate token
   const token = generateToken(user);
 
   logger.info(`[Auth] Signup successful: ${user.id}`);
-  return { user: { id: user.id, name: user.name }, token };
+  return { user: { id: user.id, name: user.name, whatsapp_code: wcode }, token };
 }
 
 // ── Login ────────────────────────────────────────────────────────
@@ -75,17 +80,32 @@ async function login(name, passcode) {
 
   const user = matchedUser;
 
+  let wcode = user.whatsapp_code;
+  if (!wcode) {
+    const db = require('../db/knex');
+    wcode = 'ALIGNCV-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+    await db('users').where({ id: user.id }).update({ whatsapp_code: wcode });
+  }
+
   const token = generateToken(user);
 
   logger.info(`[Auth] Login successful: ${user.id}`);
-  return { user: { id: user.id, name: user.name }, token };
+  return { user: { id: user.id, name: user.name, whatsapp_code: wcode }, token };
 }
 
 // ── Get Current User ─────────────────────────────────────────────
 async function getMe(userId) {
   const user = await userQueries.findById(userId);
   if (!user) throw new AuthError('User not found');
-  return { id: user.id, name: user.name, created_at: user.created_at };
+  
+  let wcode = user.whatsapp_code;
+  if (!wcode) {
+    const db = require('../db/knex');
+    wcode = 'ALIGNCV-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+    await db('users').where({ id: user.id }).update({ whatsapp_code: wcode });
+  }
+  
+  return { id: user.id, name: user.name, created_at: user.created_at, whatsapp_code: wcode };
 }
 
 module.exports = { signup, login, getMe };
