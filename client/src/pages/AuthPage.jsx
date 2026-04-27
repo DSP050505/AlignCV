@@ -261,6 +261,10 @@ export default function AuthPage() {
   }, []);
 
   const startAIFill = useCallback(() => {
+    /* If user has already typed something, do not trigger AI fill */
+    if (nameInputRef.current?.value || passcodeInputRef.current?.value) {
+      return;
+    }
     effect2Active.current = true;
     /* slam ghosts into center */
     if (attackAnimRef.current) { cancelAnimationFrame(attackAnimRef.current); attackAnimRef.current = null; }
