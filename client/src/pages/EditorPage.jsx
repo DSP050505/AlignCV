@@ -102,6 +102,10 @@ export default function EditorPage() {
   const [chatLoading, setChatLoading] = useState(false);
   const chatEndRef = useRef(null);
 
+  // Manual Edit
+  const [manualCode, setManualCode] = useState('');
+  const [savingManual, setSavingManual] = useState(false);
+
   // Diff Review
   const [pendingChange, setPendingChange] = useState(null);
   const [applyingChange, setApplyingChange] = useState(false);
@@ -112,7 +116,11 @@ export default function EditorPage() {
   useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [chatMessages]);
 
   const fetchResume = async () => {
-    try { const res = await resumeApi.get(id); setResumeData(res.data.data); }
+    try { 
+      const res = await resumeApi.get(id); 
+      setResumeData(res.data.data); 
+      setManualCode(res.data.data.html_source || '');
+    }
     catch { toast.error('Failed to load resume'); }
     finally { setLoading(false); }
   };
@@ -174,6 +182,22 @@ export default function EditorPage() {
     try { const r = await atsApi.score(id); setAtsData(r.data.data); toast.success(`Score: ${r.data.data.overall_score}`); }
     catch { toast.error('Scoring failed'); }
     finally { setScoringATS(false); }
+  };
+
+  // ── Manual Edit ────────────────────────────────────────────────
+  const handleSaveManualCode = async () => {
+    if (!manualCode.trim()) return;
+    setSavingManual(true);
+    try {
+      const res = await resumeApi.updateSource(id, manualCode);
+      setResumeData(res.data.data);
+      setPdfKey(Date.now());
+      toast.success('Changes applied & PDF rebaked!');
+    } catch (err) {
+      toast.error('Failed to apply changes');
+    } finally {
+      setSavingManual(false);
+    }
   };
 
   // ── Chat ───────────────────────────────────────────────────────
@@ -277,6 +301,7 @@ export default function EditorPage() {
               { key: 'skillgap', icon: ShieldAlert, label: 'Gaps' },
               { key: 'ats', icon: Target, label: 'ATS' },
               { key: 'chat', icon: MessageSquare, label: 'Chat' },
+              { key: 'code', icon: FileText, label: 'Manual Edit' },
             ].map(tab => (
               <button key={tab.key} onClick={() => setActivePanel(tab.key)} style={tabStyle(activePanel === tab.key)}>
                 <tab.icon size={15} />{tab.label}
@@ -484,6 +509,45 @@ export default function EditorPage() {
                     <Send size={16} />
                   </button>
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── MANUAL EDIT TAB ── */}
+          {activePanel === 'code' && (
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+              <div style={{ padding: '16px', borderBottom: `1px solid ${C.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <div style={{ fontSize: 15, fontWeight: 600, color: C.white }}>Raw Code Editor</div>
+                  <div style={{ fontSize: 12, color: C.textMuted }}>Directly modify the HTML/CSS structure.</div>
+                </div>
+                <button onClick={handleSaveManualCode} disabled={savingManual} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', background: C.primary, color: C.white, border: 'none', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer', opacity: savingManual ? 0.6 : 1 }}>
+                  {savingManual ? <><Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} /> Applying...</> : <><Check size={16} /> Apply & Render</>}
+                </button>
+              </div>
+              <div style={{ flex: 1, padding: 0, overflow: 'hidden', display: 'flex' }}>
+                <textarea
+                  value={manualCode}
+                  onChange={(e) => setManualCode(e.target.value)}
+                  spellCheck={false}
+                  style={{
+                    flex: 1,
+                    width: '100%',
+                    height: '100%',
+                    padding: '16px',
+                    background: '#0B0F19', // Slightly darker than panel
+                    border: 'none',
+                    color: '#E2E8F0',
+                    fontFamily: "'Fira Code', 'Cascadia Code', Consolas, monospace",
+                    fontSize: 13,
+                    lineHeight: 1.5,
+                    resize: 'none',
+                    outline: 'none',
+                    whiteSpace: 'pre',
+                    overflowWrap: 'normal',
+                    overflowX: 'auto'
+                  }}
+                />
               </div>
             </div>
           )}
