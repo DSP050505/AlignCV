@@ -20,6 +20,18 @@ const fs = require('fs');
   }
 });
 
+// ── Global Error Listeners ───────────────────────────────────────
+process.on('unhandledRejection', (reason) => {
+  logger.error(`[Process] Unhandled Rejection: ${reason.message || reason}`, { stack: reason.stack });
+  // In production, you might want to gracefully shutdown
+});
+
+process.on('uncaughtException', (err) => {
+  logger.error(`[Process] Uncaught Exception: ${err.message}`, { stack: err.stack });
+  // Give logger time to write before exiting
+  setTimeout(() => process.exit(1), 1000);
+});
+
 // ── Start Server ─────────────────────────────────────────────────
 async function start() {
   try {

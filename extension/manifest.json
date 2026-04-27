@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "AlignCV Auto-Scrape",
+  "version": "1.3",
+  "description": "Automatically find LinkedIn connections for AlignCV ReferralRadar",
+  "permissions": [
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://www.linkedin.com/*",
+    "http://localhost:3000/*",
+    "http://127.0.0.1:3000/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://localhost:3000/*", "http://127.0.0.1:3000/*"],
+      "js": ["content-app.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_title": "AlignCV Auto-Scrape"
+  }
+}

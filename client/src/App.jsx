@@ -18,6 +18,8 @@ const PreviewProfilePage = lazy(() => import('./pages/PreviewProfilePage'));
 const NewResumePage = lazy(() => import('./pages/NewResumePage'));
 const EditorPage = lazy(() => import('./pages/EditorPage'));
 const HistoryPage = lazy(() => import('./pages/HistoryPage'));
+const ReferralRadarPage = lazy(() => import('./pages/ReferralRadarPage'));
+const ReferralLogPage = lazy(() => import('./pages/ReferralLogPage'));
 
 // ── Auth Guard ───────────────────────────────────────────────────
 function ProtectedRoute({ children }) {
@@ -89,6 +91,8 @@ export default function App() {
           <Route path="/new-resume" element={<ProtectedRoute><NewResumePage /></ProtectedRoute>} />
           <Route path="/editor/:id" element={<ProtectedRoute><EditorPage /></ProtectedRoute>} />
           <Route path="/history" element={<ProtectedRoute><HistoryPage /></ProtectedRoute>} />
+          <Route path="/referral" element={<ProtectedRoute><ReferralRadarPage /></ProtectedRoute>} />
+          <Route path="/referral/log" element={<ProtectedRoute><ReferralLogPage /></ProtectedRoute>} />
 
           {/* Catch-all */}
           <Route path="*" element={<Navigate to="/auth" replace />} />

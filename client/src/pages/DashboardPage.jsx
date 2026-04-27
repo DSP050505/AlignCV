@@ -230,7 +230,7 @@ export default function DashboardPage() {
           <h1 style={{ fontSize: '42px', fontWeight: 900, margin: '0 0 12px 0' }}>Hello, <span style={{ background: `linear-gradient(to right, ${colors.primaryLight}, #c084fc)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{user?.name}</span></h1>
           <p style={{ fontSize: '17px', color: colors.textSecondary, margin: 0 }}>What would you like to achieve today?</p>
         </div>
-        <div className="dashboard-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 360px)', gap: '24px' }}>
+        <div className="dashboard-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 280px)', gap: '20px' }}>
           <div id="tour-card-1" onClick={() => navigate('/profile')} className={`center-card ${tourSteps[tourStep]?.target === 'card-1' ? 'tour-highlight' : ''}`} style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${colors.border}`, borderRadius: '24px', padding: '32px', cursor: 'pointer' }}>
              <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(59,130,246,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}><UserCircle color="#60A5FA" size={28} /></div>
              <h3 style={{ fontSize: '20px', fontWeight: 800 }}>Professional Bio</h3>
@@ -248,6 +248,12 @@ export default function DashboardPage() {
              <h3 style={{ fontSize: '20px', fontWeight: 800 }}>Vault & History</h3>
              <p style={{ fontSize: '14px', color: colors.textMuted, margin: '12px 0 24px 0' }}>Manage all tailored resumes and download your PDFs.</p>
              <div style={{ fontSize: '13px', fontWeight: 700, color: '#c084fc', display: 'flex', gap: '4px' }}>View Vault <ArrowRight size={14}/></div>
+          </div>
+          <div onClick={() => navigate('/referral')} className="center-card" style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${colors.border}`, borderRadius: '24px', padding: '32px', cursor: 'pointer' }}>
+             <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(16,185,129,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}><Target color="#10B981" size={28} /></div>
+             <h3 style={{ fontSize: '20px', fontWeight: 800 }}>ReferralRadar</h3>
+             <p style={{ fontSize: '14px', color: colors.textMuted, margin: '12px 0 24px 0' }}>Find insider connections and send personalized referral requests.</p>
+             <div style={{ fontSize: '13px', fontWeight: 700, color: '#10B981', display: 'flex', gap: '4px' }}>Start Referral <ArrowRight size={14}/></div>
           </div>
         </div>
       </main>

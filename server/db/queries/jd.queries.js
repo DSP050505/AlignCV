@@ -11,14 +11,17 @@ exports.create = (userId, data) => {
       raw_jd: data.raw_jd,
       role_title: data.role_title,
       company_name: data.company_name,
-      required_skills: JSON.stringify(data.required_skills || []),
-      preferred_skills: JSON.stringify(data.preferred_skills || []),
-      keywords: JSON.stringify(data.keywords || []),
+      required_skills: JSON.stringify(Array.isArray(data.required_skills) ? data.required_skills : (data.required_skills ? [data.required_skills] : [])),
+      preferred_skills: JSON.stringify(Array.isArray(data.preferred_skills) ? data.preferred_skills : (data.preferred_skills ? [data.preferred_skills] : [])),
+      keywords: JSON.stringify(Array.isArray(data.keywords) ? data.keywords : (data.keywords ? [data.keywords] : [])),
       seniority: data.seniority,
       domain: data.domain,
     })
     .returning('*')
-    .then((rows) => rows[0]);
+    .then((rows) => {
+      if (!rows || rows.length === 0) throw new Error('Database failed to return inserted JD record');
+      return rows[0];
+    });
 };
 
 exports.findById = (id) => {

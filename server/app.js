@@ -19,6 +19,7 @@ const skillgapRoutes = require('./routes/skillgap.routes');
 const atsRoutes = require('./routes/ats.routes');
 const chatRoutes = require('./routes/chat.routes');
 const trackerRoutes = require('./routes/tracker.routes');
+const referralRoutes = require('./routes/referral.routes');
 
 // ── Import Error Handler ─────────────────────────────────────────
 const errorHandler = require('./middleware/error.middleware');
@@ -72,6 +73,7 @@ app.use('/api/skillgap', skillgapRoutes);
 app.use('/api/ats', atsRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/tracker', require('./middleware/auth.middleware'), trackerRoutes);
+app.use('/api/referral', require('./middleware/auth.middleware'), referralRoutes);
 // app.use('/api/export', exportRoutes);
 
 // ── 404 Handler ──────────────────────────────────────────────────
