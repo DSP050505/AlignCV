@@ -1,5 +1,6 @@
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
+const puppeteer = require('puppeteer');
 const db = require('../db/knex');
 const path = require('path');
 const fs = require('fs');
@@ -7,7 +8,6 @@ const config = require('../config');
 const logger = require('../utils/logger');
 
 let client;
-
 
 // In-memory session store: maps phone -> { userId, timestamp }
 const activeSessions = new Map();
@@ -37,13 +37,19 @@ async function sendResumeList(userId, message) {
 function initializeWhatsAppBot() {
   logger.info('[WhatsApp] Initializing WhatsApp-Web Client...');
 
+  const puppeteerOptions = {
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
+  };
+
+  if (process.env.NODE_ENV === 'production') {
+    puppeteerOptions.executablePath = puppeteer.executablePath();
+  }
+
   // Use LocalAuth to save the session so you don't have to scan QR every time
   client = new Client({
     authStrategy: new LocalAuth({ dataPath: './.wwebjs_auth' }),
-    puppeteer: {
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    }
+    puppeteer: puppeteerOptions
   });
 
   client.on('qr', (qr) => {
