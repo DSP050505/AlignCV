@@ -100,14 +100,19 @@ function initializeWhatsAppBot() {
 
       // 2. If no session, they MUST provide a code
       if (!session) {
-        if (text.startsWith('ALIGNCV-')) {
-          const authUser = await db('users').where({ whatsapp_code: text }).first();
+        const cleanText = text.trim().toUpperCase();
+        logger.debug(`[WhatsApp] Verifying code. Received: "${text}", Cleaned: "${cleanText}"`);
+        
+        if (cleanText.startsWith('ALIGNCV-')) {
+          const authUser = await db('users').where({ whatsapp_code: cleanText }).first();
           if (authUser) {
             // Create a temporary session
             activeSessions.set(phone, { userId: authUser.id, timestamp: Date.now() });
+            logger.info(`[WhatsApp] Account verified for user: ${authUser.id}`);
             await message.reply(`✅ Account verified! Your session is active for 2 minutes.`);
             await sendResumeList(authUser.id, message);
           } else {
+            logger.warn(`[WhatsApp] Invalid code provided: ${cleanText}`);
             await message.reply(`❌ Invalid code. Please check your dashboard and try again.`);
           }
         } else {
@@ -193,6 +198,33 @@ function initializeWhatsAppBot() {
     } catch (err) {
       logger.error(`[WhatsApp] Message error: ${err.message}`);
     }
+  });
+
+  // Handle graceful shutdown to prevent EBUSY locks from ghost Chromium instances
+  const cleanup = async () => {
+    logger.info('[WhatsApp] Shutting down client to prevent locks...');
+    if (client) {
+      try {
+        await client.destroy();
+      } catch (e) {
+        // Ignore errors
+      }
+    }
+    process.exit(0);
+  };
+
+  process.on('SIGINT', cleanup);
+  process.on('SIGTERM', cleanup);
+  process.once('SIGUSR2', async () => {
+    logger.info('[WhatsApp] Nodemon restart detected, cleaning up...');
+    if (client) {
+      try {
+        await client.destroy();
+      } catch (e) {
+        // Ignore errors
+      }
+    }
+    process.kill(process.pid, 'SIGUSR2');
   });
 
   client.initialize();
