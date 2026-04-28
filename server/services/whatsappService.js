@@ -8,6 +8,32 @@ const logger = require('../utils/logger');
 
 let client;
 
+
+// In-memory session store: maps phone -> { userId, timestamp }
+const activeSessions = new Map();
+const SESSION_TIMEOUT_MS = 2 * 60 * 1000; // 2 minutes
+
+async function sendResumeList(userId, message) {
+  const resumes = await db('resumes')
+    .select('id', 'title', 'created_at')
+    .where({ user_id: userId })
+    .orderBy('created_at', 'desc')
+    .limit(10);
+
+  if (resumes.length === 0) {
+    await message.reply(`You don't have any resumes generated yet. Go to AlignCV web to create one!`);
+    return;
+  }
+
+  let replyText = `📄 *Your AlignCV Resumes*\n\n`;
+  resumes.forEach((r, i) => {
+    replyText += `*${i + 1}*. ${r.title || 'Untitled Resume'} (${new Date(r.created_at).toLocaleDateString()})\n`;
+  });
+  replyText += `\nReply with the *number* to instantly download the PDF.`;
+  
+  await message.reply(replyText);
+}
+
 function initializeWhatsAppBot() {
   logger.info('[WhatsApp] Initializing WhatsApp-Web Client...');
 
@@ -37,53 +63,58 @@ function initializeWhatsAppBot() {
     logger.error('[WhatsApp] Authentication failed:', msg);
   });
 
-  client.on('message', async (message) => {
+  client.on('message_create', async (message) => {
+    // If the message was sent by the bot/owner's phone to someone else, ignore it.
+    // Allow if it was sent to themselves (for testing).
+    if (message.fromMe && message.from !== message.to) {
+      return;
+    }
+
     const text = message.body.trim();
     const textLower = text.toLowerCase();
     const phone = message.from; // e.g. "919876543210@c.us"
 
-    try {
-      // 1. Check if user is linked
-      const user = await db('users').where({ whatsapp_phone: phone }).first();
+    // Ignore bot's own automated replies to prevent infinite loops when testing in "Message Yourself"
+    const botSignatures = ['👋', '✅', '❌', '📄', 'Fetching PDF', 'Sorry, the PDF', "You don't have", 'Hi there!'];
+    if (message.fromMe) {
+       for (const sig of botSignatures) {
+           if (text.startsWith(sig)) return;
+       }
+    }
 
-      // 2. If not linked, look for auth code
-      if (!user) {
+    try {
+      // 1. Check if user has an active session
+      let session = activeSessions.get(phone);
+      
+      // Clean up expired session
+      if (session && (Date.now() - session.timestamp > SESSION_TIMEOUT_MS)) {
+        activeSessions.delete(phone);
+        session = null;
+      }
+
+      // 2. If no session, they MUST provide a code
+      if (!session) {
         if (text.startsWith('ALIGNCV-')) {
           const authUser = await db('users').where({ whatsapp_code: text }).first();
           if (authUser) {
-            await db('users').where({ id: authUser.id }).update({ whatsapp_phone: phone });
-            await message.reply(`✅ Account linked! Welcome to AlignCV WhatsApp Bot.\n\nType *resume* at any time to view your tailored resumes.`);
+            // Create a temporary session
+            activeSessions.set(phone, { userId: authUser.id, timestamp: Date.now() });
+            await message.reply(`✅ Account verified! Your session is active for 2 minutes.`);
+            await sendResumeList(authUser.id, message);
           } else {
             await message.reply(`❌ Invalid code. Please check your dashboard and try again.`);
           }
+        } else {
+          await message.reply(`👋 Welcome to AlignCV!\nPlease reply with your unique WhatsApp Bot Code (e.g. ALIGNCV-123456) to view your resumes.`);
         }
         return;
       }
 
-      // 3. User is linked. Handle Commands:
-      if (textLower === 'resume' || textLower === 'resumes') {
-        const resumes = await db('resumes')
-          .select('id', 'title', 'created_at')
-          .where({ user_id: user.id })
-          .orderBy('created_at', 'desc')
-          .limit(10);
+      // Refresh session timestamp on activity
+      session.timestamp = Date.now();
+      const userId = session.userId;
 
-        if (resumes.length === 0) {
-          await message.reply(`You don't have any resumes generated yet. Go to AlignCV web to create one!`);
-          return;
-        }
-
-        let replyText = `📄 *Your AlignCV Resumes*\n\n`;
-        resumes.forEach((r, i) => {
-          replyText += `*${i + 1}*. ${r.title || 'Untitled Resume'} (${new Date(r.created_at).toLocaleDateString()})\n`;
-        });
-        replyText += `\nReply with the *number* to instantly download the PDF.`;
-        
-        await message.reply(replyText);
-        return;
-      }
-
-      // Check if they replied with a number
+      // 3. User is verified in session. Handle Commands:
       const selection = parseInt(text, 10);
       if (!isNaN(selection) && selection > 0 && selection <= 10) {
         const resumes = await db('resumes')
@@ -95,7 +126,7 @@ function initializeWhatsAppBot() {
              'tracker_applications.job_id'
           )
           .leftJoin('tracker_applications', 'resumes.id', 'tracker_applications.resume_id')
-          .where({ 'resumes.user_id': user.id })
+          .where({ 'resumes.user_id': userId })
           .orderBy('resumes.created_at', 'desc')
           .limit(10);
         
@@ -128,7 +159,11 @@ function initializeWhatsAppBot() {
              jobid = 'Role';
           }
 
-          const safeName = user.name.replace(/[^a-zA-Z0-9]/g, '');
+          // We need the user's name for the filename
+          const user = await db('users').select('name').where({ id: userId }).first();
+          const userName = user ? user.name : 'AlignCV';
+
+          const safeName = userName.replace(/[^a-zA-Z0-9]/g, '');
           const safeCompany = company.replace(/[^a-zA-Z0-9]/g, '');
           const safeJobId = jobid.replace(/[^a-zA-Z0-9]/g, '');
           const finalFilename = `${safeName}_${safeCompany}_${safeJobId}.pdf`;
@@ -144,6 +179,9 @@ function initializeWhatsAppBot() {
           }
           return;
         }
+      } else {
+        // Any other message from a verified user directly shows the resume list
+        await sendResumeList(userId, message);
       }
 
     } catch (err) {
