@@ -4,7 +4,7 @@ import { referralApi } from '../api/referralApi';
 import { resumeApi } from '../api/resumeApi';
 import { useAuthStore } from '../store/authStore';
 import toast from 'react-hot-toast';
-import { ChevronLeft, Check, Loader2, Upload, Send, Copy, ExternalLink, Search, Radar, Briefcase, FileText, Users, ArrowRight, X } from 'lucide-react';
+import { ChevronLeft, Check, Loader2, Upload, Send, Copy, ExternalLink, Search, Radar, Briefcase, FileText, Users, ArrowRight, X, Download } from 'lucide-react';
 import { useEffect } from 'react';
 
 const C = { bg:'#070c1a', card:'rgba(10,17,38,0.95)', border:'rgba(99,102,241,0.3)', primary:'#6366f1', primaryLight:'#818cf8', text:'#e8eaf6', textSec:'rgba(148,151,255,0.7)', success:'#10b981', warning:'#f59e0b', danger:'#ef4444' };
@@ -337,16 +337,22 @@ export default function ReferralRadarPage() {
                   To find your connections securely, please install our official Chrome Extension. It automates the search without requiring your LinkedIn password.
                 </p>
                 <div style={{ display:'flex', flexDirection:'column', gap:12, alignItems:'center' }}>
-                  <a href="https://chrome.google.com/webstore" target="_blank" rel="noreferrer" style={{ ...btn(), display:'inline-flex', padding:'14px 28px', fontSize:15 }}>
-                    Add to Chrome — It's Free
+                  <a href="https://github.com/DSP050505/AlignCV/releases/download/v1.0.0/aligncv-extension.zip" style={{ ...btn(), display:'inline-flex', padding:'14px 28px', fontSize:15, alignItems: 'center' }}>
+                    <Download size={18} style={{ marginRight: 8 }} /> Download Extension (.zip)
                   </a>
                   <button onClick={() => window.location.reload()} style={{ background:'none', border:'none', color:C.primaryLight, fontSize:13, cursor:'pointer', textDecoration:'underline' }}>
                     I installed it — Refresh Page
                   </button>
                 </div>
-                <p style={{ marginTop:24, fontSize:12, color:'rgba(255,255,255,0.3)' }}>
-                  (Developer Note: Load the 'extension' folder via chrome://extensions for local testing)
-                </p>
+                <div style={{ marginTop:24, fontSize:13, color:'rgba(255,255,255,0.6)', textAlign: 'left', background: 'rgba(0,0,0,0.2)', padding: '16px', borderRadius: '8px' }}>
+                  <strong>How to install:</strong>
+                  <ol style={{ margin: '8px 0 0 0', paddingLeft: '20px', lineHeight: 1.5 }}>
+                    <li>Extract the downloaded <code>.zip</code> file to a folder.</li>
+                    <li>Go to <code>chrome://extensions</code> in your browser.</li>
+                    <li>Enable <strong>Developer mode</strong> (top right).</li>
+                    <li>Click <strong>Load unpacked</strong> and select the extracted folder.</li>
+                  </ol>
+                </div>
               </div>
             ) : (
               <div style={{ padding:40, border:`2px dashed ${C.primary}`, borderRadius:12, textAlign:'center', background: 'rgba(99,102,241,0.05)' }}>
