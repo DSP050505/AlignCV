@@ -39,18 +39,27 @@ const PROVIDERS = {
     currentKeyIndex: 0,
     supportsJsonMode: false, // Gemini via OpenAI compat may not always support response_format
   },
+  cloudflare: {
+    name: 'Cloudflare',
+    baseUrl: process.env.CLOUDFLARE_ACCOUNT_ID ? `https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/ai/v1` : null,
+    model: '@cf/meta/llama-3.1-8b-instruct',
+    keys: [],
+    cooldowns: {},
+    currentKeyIndex: 0,
+    supportsJsonMode: false, // CF workers AI doesn't formally support response_format in all models
+  },
 };
 
 // ── Task → Provider Priority Map ────────────────────────────────
 // Each task type gets a preferred order of providers to try
 const TASK_ROUTES = {
-  parse_resume_pdf:   ['groq', 'cerebras', 'google'],
-  analyse_jd:         ['groq', 'cerebras', 'google'],
-  score_and_rank:     ['cerebras', 'groq', 'google'],
-  rewrite_bullets:    ['cerebras', 'groq', 'google'],
-  detect_skill_gaps:  ['groq', 'cerebras', 'google'],
-  ats_score:          ['cerebras', 'groq', 'google'],
-  chat_edit:          ['groq', 'cerebras', 'google'],
+  parse_resume_pdf:   ['groq', 'cloudflare', 'cerebras', 'google'],
+  analyse_jd:         ['cloudflare', 'cerebras', 'google', 'groq'],
+  score_and_rank:     ['cloudflare', 'cerebras', 'google', 'groq'],
+  rewrite_bullets:    ['cloudflare', 'cerebras', 'google', 'groq'],
+  detect_skill_gaps:  ['cloudflare', 'cerebras', 'google', 'groq'],
+  ats_score:          ['cloudflare', 'cerebras', 'google', 'groq'],
+  chat_edit:          ['cloudflare', 'cerebras', 'google', 'groq'],
 };
 
 // ── Initialize Keys from Environment ────────────────────────────
@@ -63,14 +72,15 @@ function initializeKeys() {
   PROVIDERS.groq.keys = parseKeys('GROQ_API_KEYS');
   PROVIDERS.cerebras.keys = parseKeys('CEREBRAS_API_KEYS');
   PROVIDERS.google.keys = parseKeys('GOOGLE_AI_KEYS');
+  PROVIDERS.cloudflare.keys = parseKeys('CLOUDFLARE_API_TOKEN');
 
   // Fallback: if no multi-keys defined, use legacy single key
   if (PROVIDERS.groq.keys.length === 0 && process.env.NIM_API_KEY) {
     PROVIDERS.groq.keys = [process.env.NIM_API_KEY];
   }
 
-  const totalKeys = PROVIDERS.groq.keys.length + PROVIDERS.cerebras.keys.length + PROVIDERS.google.keys.length;
-  logger.info(`[AIRouter] Initialized with ${totalKeys} keys: Groq(${PROVIDERS.groq.keys.length}), Cerebras(${PROVIDERS.cerebras.keys.length}), Google(${PROVIDERS.google.keys.length})`);
+  const totalKeys = PROVIDERS.groq.keys.length + PROVIDERS.cerebras.keys.length + PROVIDERS.google.keys.length + PROVIDERS.cloudflare.keys.length;
+  logger.info(`[AIRouter] Initialized with ${totalKeys} keys: Groq(${PROVIDERS.groq.keys.length}), Cerebras(${PROVIDERS.cerebras.keys.length}), Google(${PROVIDERS.google.keys.length}), Cloudflare(${PROVIDERS.cloudflare.keys.length})`);
 }
 
 // Call once at module load
