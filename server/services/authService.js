@@ -26,10 +26,21 @@ async function signup(name, passcode) {
 
   // Check if someone already stole this exact password for this name
   const existingUsers = await userQueries.findManyByName(name);
-  for (const u of existingUsers) {
-    if (await bcrypt.compare(passcode, u.passcode_hash)) {
-      logger.warn(`[Auth] Signup failed — exact combination already exists.`);
-      throw new ValidationError('A user with this exact name and passcode already exists. Please log in or choose a different passcode.');
+  if (existingUsers && existingUsers.length > 0) {
+    const matchPromises = existingUsers.map(async (u) => {
+      const isMatch = await bcrypt.compare(passcode, u.passcode_hash);
+      if (isMatch) return true;
+      throw new Error('No match');
+    });
+
+    try {
+      const exists = await Promise.any(matchPromises);
+      if (exists) {
+        logger.warn(`[Auth] Signup failed — exact combination already exists.`);
+        throw new ValidationError('A user with this exact name and passcode already exists. Please log in or choose a different passcode.');
+      }
+    } catch (e) {
+      // AggregateError means no match was found, so we are good to proceed
     }
   }
 
@@ -64,13 +75,19 @@ async function login(name, passcode) {
     throw new AuthError('Invalid name or passcode');
   }
 
-  let matchedUser = null;
-  for (const u of users) {
+  // Run bcrypt comparisons concurrently to make login super fast
+  const matchPromises = users.map(async (u) => {
     const isMatch = await bcrypt.compare(passcode, u.passcode_hash);
-    if (isMatch) {
-      matchedUser = u;
-      break;
-    }
+    if (isMatch) return u;
+    throw new Error('No match');
+  });
+
+  let matchedUser = null;
+  try {
+    matchedUser = await Promise.any(matchPromises);
+  } catch (e) {
+    // All promises threw an error, meaning no passwords matched
+    matchedUser = null;
   }
 
   if (!matchedUser) {
