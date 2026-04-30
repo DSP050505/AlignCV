@@ -108,6 +108,8 @@ export default function DashboardPage() {
     { title: 'Professional Bio', desc: 'Update your core skills and history for the AI to use during tailoring.', target: 'card-1' },
     { title: 'AI Resume Forge', desc: 'The heart of AlignCV. Paste a JD and generate a tailored resume instantly.', target: 'card-2' },
     { title: 'Vault & History', desc: 'Access and download every tailored resume you have ever generated.', target: 'card-3' },
+    { title: 'ReferralRadar', desc: 'Find insider connections and send personalized referral requests automatically.', target: 'card-4' },
+    { title: 'OmniSearch', desc: 'Global job aggregation mapped perfectly to your profile. Find your next role with a cinematic search.', target: 'card-5' },
   ];
 
   const colors = {
@@ -261,13 +263,13 @@ export default function DashboardPage() {
              <p style={{ fontSize: '14px', color: colors.textMuted, margin: '12px 0 24px 0' }}>Manage all tailored resumes and download your PDFs.</p>
              <div style={{ fontSize: '13px', fontWeight: 700, color: '#c084fc', display: 'flex', gap: '4px' }}>View Vault <ArrowRight size={14}/></div>
           </div>
-          <div onClick={() => navigate('/referral')} className="center-card" style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${colors.border}`, borderRadius: '24px', padding: '32px', cursor: 'pointer' }}>
+          <div id="tour-card-4" onClick={() => navigate('/referral')} className={`center-card ${tourSteps[tourStep]?.target === 'card-4' ? 'tour-highlight' : ''}`} style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${colors.border}`, borderRadius: '24px', padding: '32px', cursor: 'pointer' }}>
              <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(16,185,129,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}><Target color="#10B981" size={28} /></div>
              <h3 style={{ fontSize: '20px', fontWeight: 800 }}>ReferralRadar</h3>
              <p style={{ fontSize: '14px', color: colors.textMuted, margin: '12px 0 24px 0' }}>Find insider connections and send personalized referral requests.</p>
              <div style={{ fontSize: '13px', fontWeight: 700, color: '#10B981', display: 'flex', gap: '4px' }}>Start Referral <ArrowRight size={14}/></div>
           </div>
-          <div onClick={() => navigate('/omnisearch')} className="center-card" style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${colors.border}`, borderRadius: '24px', padding: '32px', cursor: 'pointer' }}>
+          <div id="tour-card-5" onClick={() => navigate('/omnisearch')} className={`center-card ${tourSteps[tourStep]?.target === 'card-5' ? 'tour-highlight' : ''}`} style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${colors.border}`, borderRadius: '24px', padding: '32px', cursor: 'pointer' }}>
              <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(236,72,153,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
                 <svg className="w-7 h-7 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
              </div>
