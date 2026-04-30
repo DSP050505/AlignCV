@@ -25,39 +25,36 @@ const CinematicSearch = ({ logs, progress, results, searchStatus, onBack }) => {
   const [cityJobMap, setCityJobMap] = useState({}); // city name → array of job indices
   const containerRef = useRef(null);
 
-  // Phase 1 → 2 → 3 timeline
+  // Cinematic 3D Sequence timeline (16 seconds total)
   useEffect(() => {
-    // Phase 1: Globe for 2.5s
-    const t1 = setTimeout(() => {
-      setPhase('zoomIn');
-      setGlobeOpacity(0.3);
-      setScanText('Locking coordinates on India...');
-    }, 2500);
-
-    // Phase 2: Transition to India map
-    const t2 = setTimeout(() => {
+    // Only handle phase transitions for the visual handoff. 
+    // We no longer set fake scan text; the real backend logs will show immediately.
+    
+    // Stage 5: Earth stops rotating, dissolve 3D into Neon Map
+    const t5 = setTimeout(() => {
       setPhase('indiaReveal');
       setGlobeOpacity(0);
       setMapOpacity(1);
-      setMapScale(1.5); // Scaled back slightly to 1.5
+      setMapScale(1.2); 
       setTitleOpacity(1);
-      setScanText('Scanning 423 company career portals...');
-    }, 4500);
+    }, 15000);
 
-    // Phase 3: Scanning
-    const t3 = setTimeout(() => {
+    // Stage 6: Full backend scanning visualization phase
+    const t6 = setTimeout(() => {
       setPhase('scanning');
-    }, 6000);
+    }, 17000);
 
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+    return () => { clearTimeout(t5); clearTimeout(t6); };
   }, []);
 
-  // Update scan text from logs
+  // Update scan text with real backend logs IMMEDIATELY (even during 3D effect)
   useEffect(() => {
-    if (logs.length > 0 && phase === 'scanning') {
+    if (logs && logs.length > 0) {
       setScanText(logs[logs.length - 1]);
+    } else if (!scanText) {
+      setScanText('Connecting to Global Career Network...');
     }
-  }, [logs, phase]);
+  }, [logs]);
 
   // Animate pins based on results — also build a deterministic city→jobs map
   useEffect(() => {
@@ -213,27 +210,7 @@ const CinematicSearch = ({ logs, progress, results, searchStatus, onBack }) => {
         />
       </div>
 
-      {/* TITLE OVERLAY */}
-      <div style={{
-        position: 'absolute',
-        top: 30, left: 0, right: 0,
-        textAlign: 'center', zIndex: 10,
-        opacity: titleOpacity,
-        transition: 'opacity 1s ease',
-        pointerEvents: 'none'
-      }}>
-        <h1 style={{
-          fontSize: '28px', fontWeight: 900, margin: 0,
-          background: 'linear-gradient(135deg, #818cf8, #c084fc, #f472b6)',
-          WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-          letterSpacing: '-0.5px',
-        }}>
-          OmniSearch India
-        </h1>
-        <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.4)', margin: '4px 0 0 0', letterSpacing: '3px', textTransform: 'uppercase' }}>
-          Direct Career Portal Intelligence
-        </p>
-      </div>
+
 
       {/* SCAN STATUS BAR */}
       <div style={{
@@ -266,14 +243,6 @@ const CinematicSearch = ({ logs, progress, results, searchStatus, onBack }) => {
           animation: 'textGlow 2s ease-in-out infinite',
         }}>
           {scanText}
-        </p>
-
-        {/* Progress percentage */}
-        <p style={{
-          fontSize: '11px', color: 'rgba(129, 140, 248, 0.6)',
-          margin: '6px 0 0 0', fontWeight: 700,
-        }}>
-          {progress}% COMPLETE
         </p>
       </div>
 
