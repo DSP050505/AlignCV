@@ -20,6 +20,7 @@ const EditorPage = lazy(() => import('./pages/EditorPage'));
 const HistoryPage = lazy(() => import('./pages/HistoryPage'));
 const ReferralRadarPage = lazy(() => import('./pages/ReferralRadarPage'));
 const ReferralLogPage = lazy(() => import('./pages/ReferralLogPage'));
+const OmniSearchPage = lazy(() => import('./pages/OmniSearchPage'));
 
 // ── Auth Guard ───────────────────────────────────────────────────
 function ProtectedRoute({ children }) {
@@ -93,6 +94,7 @@ export default function App() {
           <Route path="/history" element={<ProtectedRoute><HistoryPage /></ProtectedRoute>} />
           <Route path="/referral" element={<ProtectedRoute><ReferralRadarPage /></ProtectedRoute>} />
           <Route path="/referral/log" element={<ProtectedRoute><ReferralLogPage /></ProtectedRoute>} />
+          <Route path="/omnisearch" element={<ProtectedRoute><OmniSearchPage /></ProtectedRoute>} />
 
           {/* Catch-all */}
           <Route path="*" element={<Navigate to="/auth" replace />} />

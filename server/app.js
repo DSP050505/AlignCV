@@ -21,6 +21,7 @@ const chatRoutes = require('./routes/chat.routes');
 const trackerRoutes = require('./routes/tracker.routes');
 const referralRoutes = require('./routes/referral.routes');
 const whatsappRoutes = require('./routes/whatsapp.routes');
+const omnisearchRoutes = require('./routes/omnisearch.routes');
 
 // ── Import Error Handler ─────────────────────────────────────────
 const errorHandler = require('./middleware/error.middleware');
@@ -76,6 +77,7 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/tracker', require('./middleware/auth.middleware'), trackerRoutes);
 app.use('/api/referral', require('./middleware/auth.middleware'), referralRoutes);
 app.use('/api/whatsapp', whatsappRoutes);
+app.use('/api/omnisearch', omnisearchRoutes);
 // app.use('/api/export', exportRoutes);
 
 // ── 404 Handler ──────────────────────────────────────────────────

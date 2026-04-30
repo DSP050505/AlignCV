@@ -60,6 +60,8 @@ const TASK_ROUTES = {
   detect_skill_gaps:  ['cloudflare', 'cerebras', 'google', 'groq'],
   ats_score:          ['cloudflare', 'cerebras', 'google', 'groq'],
   chat_edit:          ['cloudflare', 'cerebras', 'google', 'groq'],
+  omnisearch_extract: ['cloudflare', 'cerebras', 'google', 'groq'],
+  omnisearch_match:   ['cloudflare', 'cerebras', 'google', 'groq'],
 };
 
 // ── Initialize Keys from Environment ────────────────────────────

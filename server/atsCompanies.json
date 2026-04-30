@@ -1,0 +1,43 @@
+{
+  "greenhouse": [
+    "stripe", "discord", "netflix", "cloudflare", "databricks", "mongodb",
+    "elastic", "confluent", "hashicorp", "datadog", "pagerduty", "hubspot",
+    "figma", "canva", "miro", "airtable", "clickup", "notion", "asana",
+    "twilio", "amplitude", "braze", "snyk", "wiz", "okta", "zscaler",
+    "crowdstrike", "sentinelone", "paloaltonetworks", "snowflakecomputing",
+    "veaboretesting", "celonis", "uipath", "fivetran", "dbtlabs", "vercel",
+    "supabase", "planetscale", "cockroachlabs", "neo4j", "couchbase",
+    "palantir", "splunk", "dynatrace", "newrelic", "appian", "pegasystems",
+    "sailpoint", "cyberark", "beyondtrust", "rapid7", "tenable", "qualys",
+    "checkmarx", "illumio", "sysdig", "lacework", "orcasecurity",
+    "aquasecurity", "thoughtspot", "sisense", "domo", "alteryx",
+    "informatica", "matillion", "datastax", "aerospike", "tigergraph",
+    "hasura", "netlify", "render", "flyio", "shopify", "bigcommerce",
+    "squarespace", "wix", "adyen", "klarna", "braintree",
+    "digitalocean", "fastly", "imperva", "f5", "ringcentral",
+    "zendesk", "freshworks", "servicenow", "atlassian", "smartsheet",
+    "wrike", "monday", "pipedrive", "mixpanel", "segment", "pendo",
+    "fullstory", "hotjar", "contentsquare", "outreach", "salesloft",
+    "gong", "clari", "zoominfo", "6sense", "demandbase",
+    "gusto", "lattice", "cultureamp", "rippling", "bamboohr",
+    "openai", "anthropic", "cohere", "mistralai", "stabilityai",
+    "elevenlabs", "runway", "midjourney",
+    "meesho", "swiggy", "zomato", "flipkart", "razorpay", "cred",
+    "groww", "zerodha", "phonepe", "paytm", "nykaa", "lenskart",
+    "urbancompany", "innovaccer", "postman", "browserstack", "cleartax",
+    "uniphore", "darwinbox", "leapsome", "engagedly"
+  ],
+  "lever": [
+    "openai", "netflix", "shopify", "twitch", "figma",
+    "coinbase", "robinhood", "plaid", "ramp", "brex",
+    "notion", "airtable", "canva", "webflow", "retool",
+    "databricks", "snowflake", "confluent", "fivetran",
+    "crowdstrike", "sentinelone", "snyk", "lacework",
+    "gong", "outreach", "salesloft", "clari",
+    "gusto", "rippling", "lattice",
+    "vercel", "supabase", "planetscale", "railway",
+    "anthropic", "cohere", "stability",
+    "razorpay", "cred", "meesho", "swiggy", "groww",
+    "phonepe", "slice", "jupiter", "cred", "onecard"
+  ]
+}

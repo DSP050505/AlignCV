@@ -242,7 +242,7 @@ export default function DashboardPage() {
           <h1 style={{ fontSize: '42px', fontWeight: 900, margin: '0 0 12px 0' }}>Hello, <span style={{ background: `linear-gradient(to right, ${colors.primaryLight}, #c084fc)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{user?.name}</span></h1>
           <p style={{ fontSize: '17px', color: colors.textSecondary, margin: 0 }}>What would you like to achieve today?</p>
         </div>
-        <div className="dashboard-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 280px)', gap: '20px' }}>
+        <div className="dashboard-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px', width: '100%' }}>
           <div id="tour-card-1" onClick={() => navigate('/profile')} className={`center-card ${tourSteps[tourStep]?.target === 'card-1' ? 'tour-highlight' : ''}`} style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${colors.border}`, borderRadius: '24px', padding: '32px', cursor: 'pointer' }}>
              <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(59,130,246,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}><UserCircle color="#60A5FA" size={28} /></div>
              <h3 style={{ fontSize: '20px', fontWeight: 800 }}>Professional Bio</h3>
@@ -266,6 +266,14 @@ export default function DashboardPage() {
              <h3 style={{ fontSize: '20px', fontWeight: 800 }}>ReferralRadar</h3>
              <p style={{ fontSize: '14px', color: colors.textMuted, margin: '12px 0 24px 0' }}>Find insider connections and send personalized referral requests.</p>
              <div style={{ fontSize: '13px', fontWeight: 700, color: '#10B981', display: 'flex', gap: '4px' }}>Start Referral <ArrowRight size={14}/></div>
+          </div>
+          <div onClick={() => navigate('/omnisearch')} className="center-card" style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${colors.border}`, borderRadius: '24px', padding: '32px', cursor: 'pointer' }}>
+             <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(236,72,153,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
+                <svg className="w-7 h-7 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+             </div>
+             <h3 style={{ fontSize: '20px', fontWeight: 800 }}>OmniSearch</h3>
+             <p style={{ fontSize: '14px', color: colors.textMuted, margin: '12px 0 24px 0' }}>Global job aggregation mapped perfectly to your resumes.</p>
+             <div style={{ fontSize: '13px', fontWeight: 700, color: '#EC4899', display: 'flex', gap: '4px' }}>Search Jobs <ArrowRight size={14}/></div>
           </div>
         </div>
       </main>
