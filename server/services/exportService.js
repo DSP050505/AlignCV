@@ -23,8 +23,17 @@ async function htmlToPDF(htmlContent, outputFilename) {
   let browser;
   try {
     browser = await puppeteer.launch({
-      headless: true, // Use latest true instead of outdated 'new'
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--disable-extensions',
+        '--no-zygote',
+        '--single-process',
+        '--disable-software-rasterizer'
+      ],
     });
     const page = await browser.newPage();
 
