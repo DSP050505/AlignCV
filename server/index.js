@@ -10,7 +10,7 @@ const app = require('./app');
 const config = require('./config');
 const logger = require('./utils/logger');
 const db = require('./db/knex');
-const { initializeWhatsAppBot } = require('./services/whatsappService');
+// const { initializeWhatsAppBot } = require('./services/whatsappService');
 
 // ── Ensure runtime directories exist ─────────────────────────────
 const fs = require('fs');
@@ -45,8 +45,6 @@ async function start() {
       logger.info(`[Server] Environment: ${config.NODE_ENV}`);
     });
 
-    // Initialize WhatsApp Bot
-    initializeWhatsAppBot();
   } catch (err) {
     logger.error(`[Server] Failed to start: ${err.message}`);
     process.exit(1);
